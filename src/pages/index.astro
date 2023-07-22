@@ -3,17 +3,42 @@ import Layout from '../layouts/Layout.astro';
 import Card from '../components/Card.astro';
 ---
 
-<Layout title="玉葱堂書店🧅" lang="ja">
+<Layout
+	title="玉葱堂書店🧅"
+	description="玉葱堂書店は、店主の@hisasannが運営する日記とエッセイと書店本の本屋さんです。"
+	lang="ja"
+>
 	<main>
-		<h1><span class="text-gradient">玉葱堂書店🧅</span></h1>
-		<p class="instructions">
-			<strong>玉葱堂書店🧅BOOKS TAMANEGIDO</strong>のサイトです。
-		</p>
+		<h1><span class="text-gradient">玉葱堂書店</span></h1>
+		<div class="instructions">
+			<img src="/assets/hakohabu.jpeg" alt="はこハブ" class="hakohabu" />
+			<p><strong>玉葱堂書店🧅BOOKS TAMANEGIDO</strong>の店主の <a href="https://twitter.com/hisasann" target="_blank">ひささん（@hisasann）</a> です。</p>
+			<p>湯島の本屋「出発点」さんの「はこハブ」で小さく本屋を始めました。</p>
+			<p><a href="https://shuppatsuten.jp/category/hacohubooks/" target="_blank">はこハブ | 出発点</a></p>
+			<p>2年以内に店舗を持つことを VISON にしております。</p>
+			<p>自分のペースで長く続けるのが目標です。</p>
+			<p>何卒よろしくお願いします。</p>
+		</div>
 		<ul role="list" class="link-card-grid">
 			<Card
-				href="https://linktr.ee/tamanegido"
-				title="linktr.ee/tamanegido"
-				body="twitter, instagram, tictok, youtube, etc..."
+				href="https://twitter.com/tamanegido"
+				title="twitter@tamanedigo"
+				body="玉葱堂書店🧅BOOKS TAMANEGIDO（@tamanegido）さん / Twitter"
+			/>
+			<Card
+				href="https://www.instagram.com/tamanegido/"
+				title="instagram@tamanedigo"
+				body="玉葱堂書店🧅BOOKS TAMANEGIDO(@tamanegido) • Instagram写真と動画"
+			/>
+			<Card
+				href="https://www.youtube.com/channel/UCuW0vL4xZAqNzsZ51RqLeaw"
+				title="YouTube"
+				body="玉葱堂書店 - YouTube"
+			/>
+			<Card
+				href="https://www.tiktok.com/@tamanegido"
+				title="TikTok@tamanegido"
+				body="玉葱堂書店 (@tamanegido) | TikTok"
 			/>
 		</ul>
 	</main>
@@ -61,5 +86,10 @@ import Card from '../components/Card.astro';
 		grid-template-columns: repeat(auto-fit, minmax(24ch, 1fr));
 		gap: 1rem;
 		padding: 0;
+	}
+
+	.hakohabu {
+		max-width: 100%;
+		height: auto;
 	}
 </style>
