@@ -9,9 +9,10 @@ import Card from '../components/Card.astro';
 	lang="ja"
 >
 	<main>
-		<h1><span class="text-gradient">玉葱堂書店</span></h1>
+		<a href="./"><h1><img src="/assets/top.png" alt="玉葱堂のアイコン" class="icon" /></h1></a>
 		<div class="instructions">
-			<img src="/assets/hakohabu.jpeg" alt="はこハブ" class="hakohabu" />
+			<img src="/assets/logo.png" alt="玉葱堂のロゴ" class="logo" />
+			<img src="/assets/hakohabu2.jpg" alt="はこハブ" class="hakohabu" />
 			<p><strong>玉葱堂書店🧅BOOKS TAMANEGIDO</strong>の店主の <a href="https://twitter.com/hisasann" target="_blank">ひささん（@hisasann）</a> です。</p>
 			<p>湯島の本屋「出発点」さんの「はこハブ」で小さく本屋を始めました。</p>
 			<p><a href="https://shuppatsuten.jp/category/hacohubooks/" target="_blank">はこハブ | 出発点</a></p>
@@ -22,14 +23,19 @@ import Card from '../components/Card.astro';
 		</div>
 		<ul role="list" class="link-card-grid">
 			<Card
+				href="https://tamanegido.base.shop/"
+				title="オンラインショップ"
+				body="玉葱堂書店@BOOKS TAMANEGIDO"
+			/>
+			<Card
 				href="https://twitter.com/tamanegido"
 				title="twitter@tamanedigo"
-				body="玉葱堂書店🧅BOOKS TAMANEGIDO（@tamanegido）さん / Twitter"
+				body="玉葱堂書店🧅BOOKS TAMANEGIDO（@tamanegido）"
 			/>
 			<Card
 				href="https://www.instagram.com/tamanegido/"
 				title="instagram@tamanedigo"
-				body="玉葱堂書店🧅BOOKS TAMANEGIDO(@tamanegido) • Instagram写真と動画"
+				body="玉葱堂書店🧅BOOKS TAMANEGIDO(@tamanegido) Instagram"
 			/>
 			<Card
 				href="https://www.youtube.com/channel/UCuW0vL4xZAqNzsZ51RqLeaw"
@@ -89,6 +95,14 @@ import Card from '../components/Card.astro';
 		padding: 0;
 	}
 
+	.icon {
+		max-width: 50%;
+		height: auto;
+	}
+	.logo {
+		max-width: 100%;
+		height: auto;
+	}
 	.hakohabu {
 		max-width: 100%;
 		height: auto;
