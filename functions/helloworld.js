@@ -1,6 +1,6 @@
 export function onRequest(context) {
   const json = {
-    data: "Hello, world!"
+    data: "こんにちは！"
   };
 
   return new Response(JSON.stringify(json));

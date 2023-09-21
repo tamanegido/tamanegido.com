@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Card from '../components/Card.astro';
+import HelloWorld from '../components/react/HelloWorld';
 ---
 
 <Layout
@@ -13,6 +14,7 @@ import Card from '../components/Card.astro';
 		<div class="instructions">
 			<img src="/assets/logo.png" alt="玉葱堂のロゴ" class="logo" />
 			<img src="/assets/hakohabu2.jpg" alt="はこハブ" class="hakohabu" />
+			<HelloWorld client:load />
 			<p><strong>玉葱堂書店🧅BOOKS TAMANEGIDO</strong>の店主の <a href="https://twitter.com/hisasann" target="_blank">久松由幸（@hisasann）</a> です。</p>
 			<p>湯島の本屋「出発点」さんの「はこハブ」で小さく本屋を始めました。</p>
 			<p><a href="https://shuppatsuten.jp/category/hacohubooks/" target="_blank">はこハブ | 出発点</a></p>

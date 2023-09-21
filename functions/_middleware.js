@@ -1,3 +1,4 @@
+// https://developers.cloudflare.com/pages/platform/functions/examples/cors-headers/
 // Respond to OPTIONS method
 export const onRequestOptions = async () => {
   return new Response(null, {
