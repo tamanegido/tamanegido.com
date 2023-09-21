@@ -1,3 +1,7 @@
 export function onRequest(context) {
-  return new Response("Hello, world!")
+  const json = {
+    data: "Hello, world!"
+  };
+
+  return new Response(JSON.stringify(json));
 }
