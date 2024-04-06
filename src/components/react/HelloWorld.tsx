@@ -19,7 +19,7 @@ const HelloWorld: React.FC<any> = (...props) => {
   return (
     <>
       <div className=".helloworld">
-        {data.data}!
+        {data.data}
       </div>
       <style jsx="true">{`
         .helloworld {
