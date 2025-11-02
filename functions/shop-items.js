@@ -64,20 +64,23 @@ export async function onRequest(context) {
 
       // 画像URLを抽出（items-grid_imageクラスを優先、ラベル画像は除外）
       let image = '';
-      // まずitems-grid_imageクラスを含む画像を探す（items-grid_imageLabelは除外）
-      const mainImgMatch = blockHtml.match(/<img[^>]*class="[^"]*items-grid_image[^"]*"[^>]*src="([^"]+)"[^>]*(?!class="[^"]*items-grid_imageLabel)/);
-      if (mainImgMatch && mainImgMatch[1]) {
-        image = mainImgMatch[1];
-      } else {
-        // より正確なパターン: items-grid_imageを含むが、items-grid_imageLabelを含まない
-        const imgRegex = /<img[^>]*class="([^"]*)"[^>]*src="([^"]+)"[^>]*>/g;
-        let imgMatch;
-        while ((imgMatch = imgRegex.exec(blockHtml)) !== null) {
-          const classAttr = imgMatch[1];
-          const src = imgMatch[2];
-          // items-grid_imageを含み、items-grid_imageLabelを含まない画像を探す
-          if (classAttr.includes('items-grid_image') && !classAttr.includes('items-grid_imageLabel')) {
-            image = src;
+      // items-grid_imageを含むが、items-grid_imageLabelを含まない画像を探す
+      // より柔軟なパターン: class属性の順序に関係なく抽出
+      const imgRegex = /<img[^>]*>/g;
+      let imgMatch;
+      while ((imgMatch = imgRegex.exec(blockHtml)) !== null) {
+        const imgTag = imgMatch[0];
+        // class属性を確認
+        const classMatch = imgTag.match(/class="([^"]+)"/);
+        if (!classMatch) continue;
+
+        const classAttr = classMatch[1];
+        // items-grid_imageを含み、items-grid_imageLabelを含まない画像を探す
+        if (classAttr.includes('items-grid_image') && !classAttr.includes('items-grid_imageLabel')) {
+          // src属性を抽出
+          const srcMatch = imgTag.match(/src="([^"]+)"/);
+          if (srcMatch && srcMatch[1]) {
+            image = srcMatch[1];
             break;
           }
         }
