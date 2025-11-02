@@ -39,5 +39,11 @@ export const ja = {
     icon: "玉葱堂のアイコン",
     logo: "玉葱堂のロゴ",
   },
+  shopItems: {
+    title: "最新のラインナップ",
+    loading: "商品情報を読み込み中...",
+    error: "商品情報の読み込みに失敗しました",
+    viewAll: "オンラインショップで全て見る →",
+  },
 };
 

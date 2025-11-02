@@ -39,5 +39,11 @@ export const en = {
     icon: "Tamanegido icon",
     logo: "Tamanegido logo",
   },
+  shopItems: {
+    title: "Latest Lineup",
+    loading: "Loading product information...",
+    error: "Failed to load product information",
+    viewAll: "View all in online shop →",
+  },
 };
 

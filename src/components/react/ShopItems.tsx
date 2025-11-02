@@ -1,5 +1,6 @@
 import type React from 'react';
 import useSWR from 'swr';
+import { getTranslations, type Language } from '../../i18n';
 
 interface ShopItem {
   title: string;
@@ -13,6 +14,10 @@ interface ShopItemsResponse {
   error?: string;
 }
 
+interface ShopItemsProps {
+  lang?: Language;
+}
+
 const fetcher = async (key: string): Promise<ShopItemsResponse> => {
   const res = await fetch(key);
   if (!res.ok) {
@@ -21,7 +26,8 @@ const fetcher = async (key: string): Promise<ShopItemsResponse> => {
   return res.json();
 };
 
-const ShopItems: React.FC = () => {
+const ShopItems: React.FC<ShopItemsProps> = ({ lang = 'ja' }) => {
+  const t = getTranslations(lang);
   const { data, error, isLoading } = useSWR<ShopItemsResponse>(
     '/shop-items',
     fetcher,
@@ -35,7 +41,7 @@ const ShopItems: React.FC = () => {
   if (error) {
     return (
       <div className="shop-items-error">
-        <p>商品情報の読み込みに失敗しました</p>
+        <p>{t.shopItems.error}</p>
       </div>
     );
   }
@@ -43,7 +49,7 @@ const ShopItems: React.FC = () => {
   if (isLoading || !data) {
     return (
       <div className="shop-items-loading">
-        <p>商品情報を読み込み中...</p>
+        <p>{t.shopItems.loading}</p>
       </div>
     );
   }
@@ -54,7 +60,7 @@ const ShopItems: React.FC = () => {
 
   return (
     <div className="shop-items">
-      <h2>最新のラインナップ</h2>
+      <h2>{t.shopItems.title}</h2>
       <ul className="shop-items-grid">
         {data.items.map((item, index) => (
           <li key={index} className="shop-item">
@@ -84,10 +90,10 @@ const ShopItems: React.FC = () => {
           rel="noopener noreferrer"
           className="shop-items-link"
         >
-          オンラインショップで全て見る →
+          {t.shopItems.viewAll}
         </a>
       </div>
-      <style jsx>{`
+      <style>{`
         .shop-items {
           margin: 2rem 0;
           padding: 1.5rem;
