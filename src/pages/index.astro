@@ -14,8 +14,10 @@ const t = getTranslations('ja');
 	lang="ja"
 >
 	<main>
-		<LanguageSwitcher currentLang="ja" currentPath={Astro.url.pathname} />
-		<a href="/"><h1><img src="/assets/top.png" alt={t.alt.icon} class="icon" /></h1></a>
+		<div class="header-row">
+			<a href="/"><h1><img src="/assets/top.png" alt={t.alt.icon} class="icon" /></h1></a>
+			<LanguageSwitcher currentLang="ja" currentPath={Astro.url.pathname} />
+		</div>
 		<div class="instructions">
 			<img src="/assets/logo.png" alt={t.alt.logo} class="logo" />
 			<HelloWorld client:load />
@@ -61,10 +63,17 @@ const t = getTranslations('ja');
 		padding: 1.5rem;
 		max-width: 60ch;
 	}
+	.header-row {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		margin-bottom: 1rem;
+	}
 	h1 {
 		font-size: 3rem;
 		font-weight: 800;
 		margin: 0;
+		flex: 1;
 	}
 	.text-gradient {
 		background-image: var(--accent-gradient);
