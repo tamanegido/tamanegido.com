@@ -2,6 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import Card from '../../components/Card.astro';
 import HelloWorld from '../../components/react/HelloWorld';
+import ShopItems from '../../components/react/ShopItems';
 import LanguageSwitcher from '../../components/LanguageSwitcher.astro';
 import { getTranslations } from '../../i18n';
 
@@ -27,6 +28,7 @@ const t = getTranslations('ja');
 			<p>{t.home.books}</p>
 			<p>{t.home.diary}<a href="https://hisasann.notion.site/4b3ac4a874724e20ab7d5b87edd9af22?v=f783121b5c074b72bff893c7cda511da">{t.home.diaryLink}</a></p>
 		</div>
+		<ShopItems client:load />
 		<ul role="list" class="link-card-grid">
 			<Card
 				href="https://tamanegido.base.shop/"
