@@ -62,14 +62,29 @@ export async function onRequest(context) {
       const priceMatch = blockHtml.match(/<p[^>]*class="[^"]*items-grid_price[^"]*"[^>]*>¥([\d,]+)<\/p>/);
       const price = priceMatch ? priceMatch[1] : '';
 
-      // 画像URLを抽出
-      const imgMatch = blockHtml.match(/<img[^>]+src="([^"]+)"[^>]*>/);
+      // 画像URLを抽出（items-grid_imageクラスを優先）
       let image = '';
-      if (imgMatch && imgMatch[1]) {
-        image = imgMatch[1];
+      // まずitems-grid_imageクラスを含む画像を探す
+      const mainImgMatch = blockHtml.match(/<img[^>]*class="[^"]*items-grid_image[^"]*"[^>]*src="([^"]+)"/);
+      if (mainImgMatch && mainImgMatch[1]) {
+        image = mainImgMatch[1];
+      } else {
+        // フォールバック: 最初のimgタグから
+        const imgMatch = blockHtml.match(/<img[^>]+src="([^"]+)"[^>]*>/);
+        if (imgMatch && imgMatch[1]) {
+          image = imgMatch[1];
+        }
+      }
+
+      if (image) {
         // HTMLエンティティをデコード
         image = image.replace(/&amp;/g, '&');
-        if (!image.startsWith('http')) {
+        // ラベル画像を除外（static.thebase.inのラベル画像は商品画像ではない）
+        if (image.includes('static.thebase.in/img/apps/itemlabel')) {
+          image = '';
+        }
+        // 相対URLの場合は絶対URLに変換
+        if (image && !image.startsWith('http')) {
           image = image.startsWith('/')
             ? `https://cozy.books-tamanegido.shop${image}`
             : `https://cozy.books-tamanegido.shop/${image}`;
