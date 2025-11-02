@@ -1,9 +1,9 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Card from '../components/Card.astro';
-import HelloWorld from '../components/react/HelloWorld';
-import LanguageSwitcher from '../components/LanguageSwitcher.astro';
-import { getTranslations } from '../i18n';
+import Layout from '../../layouts/Layout.astro';
+import Card from '../../components/Card.astro';
+import HelloWorld from '../../components/react/HelloWorld';
+import LanguageSwitcher from '../../components/LanguageSwitcher.astro';
+import { getTranslations } from '../../i18n';
 
 const t = getTranslations('ja');
 ---
@@ -15,7 +15,7 @@ const t = getTranslations('ja');
 >
 	<main>
 		<LanguageSwitcher currentLang="ja" currentPath={Astro.url.pathname} />
-		<a href="/"><h1><img src="/assets/top.png" alt={t.alt.icon} class="icon" /></h1></a>
+		<a href="/ja/"><h1><img src="/assets/top.png" alt={t.alt.icon} class="icon" /></h1></a>
 		<div class="instructions">
 			<img src="/assets/logo.png" alt={t.alt.logo} class="logo" />
 			<HelloWorld client:load />
@@ -112,3 +112,4 @@ const t = getTranslations('ja');
 		height: auto;
 	}
 </style>
+

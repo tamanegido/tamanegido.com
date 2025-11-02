@@ -1,29 +1,29 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Card from '../components/Card.astro';
-import HelloWorld from '../components/react/HelloWorld';
-import LanguageSwitcher from '../components/LanguageSwitcher.astro';
-import { getTranslations } from '../i18n';
+import Layout from '../../layouts/Layout.astro';
+import Card from '../../components/Card.astro';
+import HelloWorld from '../../components/react/HelloWorld';
+import LanguageSwitcher from '../../components/LanguageSwitcher.astro';
+import { getTranslations } from '../../i18n';
 
-const t = getTranslations('ja');
+const t = getTranslations('en');
 ---
 
 <Layout
 	title={t.site.title}
 	description={t.site.description}
-	lang="ja"
+	lang="en"
 >
 	<main>
-		<LanguageSwitcher currentLang="ja" currentPath={Astro.url.pathname} />
-		<a href="/"><h1><img src="/assets/top.png" alt={t.alt.icon} class="icon" /></h1></a>
+		<LanguageSwitcher currentLang="en" currentPath={Astro.url.pathname} />
+		<a href="/en/"><h1><img src="/assets/top.png" alt={t.alt.icon} class="icon" /></h1></a>
 		<div class="instructions">
 			<img src="/assets/logo.png" alt={t.alt.logo} class="logo" />
 			<HelloWorld client:load />
-			<p><strong>{t.site.title}BOOKS TAMANEGIDO</strong>{t.home.owner} <a href="https://twitter.com/hisasann" target="_blank">{t.home.ownerLink}</a>{t.home.ownerSuffix}</p>
+			<p><strong>{t.site.title}BOOKS TAMANEGIDO</strong> {t.home.owner} <a href="https://twitter.com/hisasann" target="_blank">{t.home.ownerLink}</a>{t.home.ownerSuffix}</p>
 			<p>{t.home.onlineOnly}</p>
 			<p>{t.home.hope}</p>
 			<p>{t.home.books}</p>
-			<p>{t.home.diary}<a href="https://hisasann.notion.site/4b3ac4a874724e20ab7d5b87edd9af22?v=f783121b5c074b72bff893c7cda511da">{t.home.diaryLink}</a></p>
+			<p>{t.home.diary} <a href="https://hisasann.notion.site/4b3ac4a874724e20ab7d5b87edd9af22?v=f783121b5c074b72bff893c7cda511da">{t.home.diaryLink}</a></p>
 		</div>
 		<ul role="list" class="link-card-grid">
 			<Card
@@ -112,3 +112,4 @@ const t = getTranslations('ja');
 		height: auto;
 	}
 </style>
+

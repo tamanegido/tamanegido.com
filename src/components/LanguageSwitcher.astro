@@ -1,0 +1,64 @@
+---
+import { languages, type Language } from '../i18n';
+
+interface Props {
+	currentLang: Language;
+	currentPath: string;
+}
+
+const { currentLang, currentPath } = Astro.props;
+
+const getPathForLang = (lang: Language): string => {
+	if (currentPath === '/') {
+		return lang === 'ja' ? '/' : '/en';
+	}
+	if (currentPath === '/ja/') {
+		return lang === 'ja' ? '/' : '/en';
+	}
+	const pathWithoutLang = currentPath.replace(/^\/(ja|en)/, '').replace(/^\//, '');
+	return lang === 'ja' ? `/${pathWithoutLang}` : `/en/${pathWithoutLang}`;
+};
+---
+
+<div class="language-switcher">
+	{languages.map((lang) => (
+		<a
+			href={getPathForLang(lang)}
+			class={currentLang === lang ? 'active' : ''}
+			aria-label={`Switch to ${lang === 'ja' ? 'Japanese' : 'English'}`}
+		>
+			{lang === 'ja' ? '日本語' : 'English'}
+		</a>
+	))}
+</div>
+
+<style>
+	.language-switcher {
+		display: flex;
+		gap: 0.5rem;
+		margin-bottom: 1rem;
+		justify-content: flex-end;
+	}
+
+	.language-switcher a {
+		padding: 0.25rem 0.75rem;
+		border-radius: 0.25rem;
+		text-decoration: none;
+		color: rgb(var(--accent));
+		border: 1px solid rgba(var(--accent), 30%);
+		background-color: white;
+		transition: all 0.2s;
+	}
+
+	.language-switcher a:hover {
+		background-color: rgba(var(--accent), 10%);
+		border-color: rgb(var(--accent));
+	}
+
+	.language-switcher a.active {
+		background-color: rgb(var(--accent));
+		color: white;
+		border-color: rgb(var(--accent));
+	}
+</style>
+
