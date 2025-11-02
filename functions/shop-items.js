@@ -13,77 +13,79 @@ export async function onRequest(context) {
         'User-Agent': 'Mozilla/5.0 (compatible; ShopItemsBot/1.0)',
       },
     });
-    
+
     if (!response.ok) {
       throw new Error(`Failed to fetch: ${response.status}`);
     }
-    
+
     const html = await response.text();
-    
+
     const items = [];
-    
+
     // BASEのショップページから商品情報を抽出
-    // 商品ブロックのパターンを探す: <li>タグ内に商品リンクがある
-    const itemBlockRegex = /<li[^>]*>[\s\S]*?<a[^>]*href="(\/items\/\d+)"[^>]*>[\s\S]*?<\/a>[\s\S]*?<\/li>/g;
-    
-    let blockMatch;
+    // 商品リンクのパターンを探す
+    const itemLinkRegex = /href="(https:\/\/cozy\.books-tamanegido\.shop\/items\/\d+)"/g;
+
+    let linkMatch;
     const seenLinks = new Set();
-    
-    while ((blockMatch = itemBlockRegex.exec(html)) !== null && items.length < 6) {
-      const blockHtml = blockMatch[0];
-      const linkPath = blockMatch[1];
-      const fullLink = `https://cozy.books-tamanegido.shop${linkPath}`;
-      
+
+    while ((linkMatch = itemLinkRegex.exec(html)) !== null && items.length < 6) {
+      const fullLink = linkMatch[1];
+
       // 重複を避ける
       if (seenLinks.has(fullLink)) continue;
       seenLinks.add(fullLink);
-      
-      // タイトルを抽出（複数のパターンを試す）
+
+      // リンク周辺のHTMLを抽出（より広い範囲を取得）
+      const linkIndex = html.indexOf(linkMatch[0]);
+      if (linkIndex === -1) continue;
+
+      // リンクの前後2000文字を取得（商品ブロック全体を含む）
+      const startIndex = Math.max(0, linkIndex - 500);
+      const endIndex = Math.min(html.length, linkIndex + 2000);
+      const blockHtml = html.substring(startIndex, endIndex);
+
+      // タイトルを抽出（items-grid_itemTitleTextクラスから）
       let title = '';
-      const titlePatterns = [
-        /<p[^>]*>([^<]+)<\/p>/g,
-        /<h[23][^>]*>([^<]+)<\/h[23]>/g,
-        /alt="([^"]+)"/,
-        /title="([^"]+)"/,
-      ];
-      
-      for (const pattern of titlePatterns) {
-        const match = blockHtml.match(pattern);
-        if (match && match[1]) {
-          title = match[1].trim();
-          // 【】やHTMLエンティティを除去
-          title = title.replace(/【[^】]*】/g, '').trim();
-          title = title.replace(/&[^;]+;/g, '');
-          if (title && title.length > 5 && title.length < 100) break;
+      const titleMatch = blockHtml.match(/<p[^>]*class="[^"]*items-grid_itemTitleText[^"]*"[^>]*>([^<]+)<\/p>/);
+      if (titleMatch && titleMatch[1]) {
+        title = titleMatch[1].trim();
+      } else {
+        // フォールバック: alt属性から
+        const altMatch = blockHtml.match(/alt="([^"]+)"/);
+        if (altMatch && altMatch[1]) {
+          title = altMatch[1].trim();
         }
       }
-      
-      // 価格を抽出
-      const priceMatch = blockHtml.match(/¥([\d,]+)/);
+
+      // 価格を抽出（items-grid_priceクラスから）
+      const priceMatch = blockHtml.match(/<p[^>]*class="[^"]*items-grid_price[^"]*"[^>]*>¥([\d,]+)<\/p>/);
       const price = priceMatch ? priceMatch[1] : '';
-      
+
       // 画像URLを抽出
       const imgMatch = blockHtml.match(/<img[^>]+src="([^"]+)"[^>]*>/);
       let image = '';
       if (imgMatch && imgMatch[1]) {
         image = imgMatch[1];
+        // HTMLエンティティをデコード
+        image = image.replace(/&amp;/g, '&');
         if (!image.startsWith('http')) {
-          image = image.startsWith('/') 
+          image = image.startsWith('/')
             ? `https://cozy.books-tamanegido.shop${image}`
             : `https://cozy.books-tamanegido.shop/${image}`;
         }
       }
-      
+
       if (title && fullLink) {
         items.push({
-          title: title.substring(0, 80), // 長すぎるタイトルを切り詰め
+          title: title.substring(0, 80),
           price: price ? `¥${price}` : '',
           image: image,
           link: fullLink
         });
       }
     }
-    
+
     return new Response(JSON.stringify({ items }), {
       headers: {
         'Content-Type': 'application/json',
