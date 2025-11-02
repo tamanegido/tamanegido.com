@@ -62,24 +62,31 @@ export async function onRequest(context) {
       const priceMatch = blockHtml.match(/<p[^>]*class="[^"]*items-grid_price[^"]*"[^>]*>¥([\d,]+)<\/p>/);
       const price = priceMatch ? priceMatch[1] : '';
 
-      // 画像URLを抽出（items-grid_imageクラスを優先）
+      // 画像URLを抽出（items-grid_imageクラスを優先、ラベル画像は除外）
       let image = '';
-      // まずitems-grid_imageクラスを含む画像を探す
-      const mainImgMatch = blockHtml.match(/<img[^>]*class="[^"]*items-grid_image[^"]*"[^>]*src="([^"]+)"/);
+      // まずitems-grid_imageクラスを含む画像を探す（items-grid_imageLabelは除外）
+      const mainImgMatch = blockHtml.match(/<img[^>]*class="[^"]*items-grid_image[^"]*"[^>]*src="([^"]+)"[^>]*(?!class="[^"]*items-grid_imageLabel)/);
       if (mainImgMatch && mainImgMatch[1]) {
         image = mainImgMatch[1];
       } else {
-        // フォールバック: 最初のimgタグから
-        const imgMatch = blockHtml.match(/<img[^>]+src="([^"]+)"[^>]*>/);
-        if (imgMatch && imgMatch[1]) {
-          image = imgMatch[1];
+        // より正確なパターン: items-grid_imageを含むが、items-grid_imageLabelを含まない
+        const imgRegex = /<img[^>]*class="([^"]*)"[^>]*src="([^"]+)"[^>]*>/g;
+        let imgMatch;
+        while ((imgMatch = imgRegex.exec(blockHtml)) !== null) {
+          const classAttr = imgMatch[1];
+          const src = imgMatch[2];
+          // items-grid_imageを含み、items-grid_imageLabelを含まない画像を探す
+          if (classAttr.includes('items-grid_image') && !classAttr.includes('items-grid_imageLabel')) {
+            image = src;
+            break;
+          }
         }
       }
 
       if (image) {
         // HTMLエンティティをデコード
         image = image.replace(/&amp;/g, '&');
-        // ラベル画像を除外（static.thebase.inのラベル画像は商品画像ではない）
+        // ラベル画像を除外（念のため）
         if (image.includes('static.thebase.in/img/apps/itemlabel')) {
           image = '';
         }
