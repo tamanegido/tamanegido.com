@@ -40,8 +40,22 @@ const { title,description,  lang } = Astro.props;
 		font-family: system-ui, sans-serif;
 		background-color: #F5DCC9;
 	}
+	body {
+		background: linear-gradient(180deg, #F8E3D5 0%, #F5DCC9 50%, #F0D4C0 100%);
+		min-height: 100vh;
+	}
 	code {
 		font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
 			Bitstream Vera Sans Mono, Courier New, monospace;
+	}
+	a {
+		color: #7A5C3D;
+		text-decoration: underline;
+		text-decoration-color: rgba(122, 92, 61, 0.3);
+		transition: color 0.2s ease, text-decoration-color 0.2s ease;
+	}
+	a:hover {
+		color: #8B6543;
+		text-decoration-color: rgba(139, 101, 67, 0.5);
 	}
 </style>
